@@ -119,7 +119,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElemen
               <h3 className="text-xl font-semibold mb-6">Follow Me</h3>
               <div className="flex space-x-4">
                 <a
-                  href="#"
+                  href="https://github.com/oviethebaddestcoder/"
                   className="h-10 w-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition-colors duration-300"
                 >
                   <Github className="h-5 w-5" />
@@ -151,7 +151,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElemen
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="John Doe"
+                    placeholder="Your name"
                     required
                   />
                 </div>
