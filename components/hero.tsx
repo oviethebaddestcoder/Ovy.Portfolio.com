@@ -92,6 +92,8 @@ export default function Hero() {
           />
         ))}
       </div>
+
+      <p className="font-bold text-amber-200 pt-6 font-serif">Transforming Ideas Into <span className="text-green-700"> Digital Creativity</span></p>
     </section>
   )
 }
