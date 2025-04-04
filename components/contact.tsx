@@ -19,24 +19,31 @@ export default function Contact() {
   });
   const [status, setStatus] = useState("");
 
-  const handleChange = (e) => {
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("Sending...");
 
-    const response = await fetch("https://formspree.io/f/xblgzqak", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch("https://formspree.io/f/xblgzqak", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    if (response.ok) {
-      setStatus("Message sent!");
-      setFormData({ name: "", email: "", message: "", subject: "" }); // Clear form after success
-    } else {
+      if (response.ok) {
+        setStatus("Message sent!");
+        setFormData({ name: "", email: "", message: "", subject: "" }); // Clear form after success
+      } else {
+        const errorData = await response.json();
+        console.error("Error response:", errorData); // Log error response for debugging
+        setStatus("Something went wrong. Try again.");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error); // Log fetch error for debugging
       setStatus("Something went wrong. Try again.");
     }
   };

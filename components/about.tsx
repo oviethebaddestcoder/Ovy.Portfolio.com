@@ -52,11 +52,11 @@ export default function About() {
             </motion.h2>
 
             <motion.p variants={itemVariants} className="text-lg mb-4">
-              Hello! I'm a passionate web developer with a strong focus on creating beautiful, functional, and
+              Hello! I&apos;m a passionate web developer with a strong focus on creating beautiful, functional, and
               user-friendly websites and applications.
             </motion.p>
 
-            <motion.p variants={itemVariants} className="text-lg mb-6 text-yellow-300 ">
+            <motion.p variants={itemVariants} className="text-lg mb-6 text-blue-900 ">
              <h1>Your vision, My code...Bringing ideas to Life</h1>
             </motion.p>
 

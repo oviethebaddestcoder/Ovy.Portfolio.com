@@ -96,6 +96,8 @@ export default function Skills() {
             </motion.div>
           ))}
         </motion.div>
+
+        <p>Skills include: &apos;JavaScript&apos;, &apos;React&apos;, and &apos;Node.js&apos;.</p>
       </div>
     </section>
   )
