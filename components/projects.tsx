@@ -2,83 +2,82 @@
 
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Github, ExternalLink, Code2, Rocket, ShoppingCart, CheckSquare, Scissors, Pill } from "lucide-react"
+import Link from "next/link"
+import { ArrowUpRight, Github, Rocket, ShoppingCart, CheckSquare, Scissors, Pill, Sparkles } from "lucide-react"
 
 export default function Projects() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.1 })
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   const projects = [
     {
       title: "Hybrid Coaching Accountability Platform",
-      description:
-        "A comprehensive coaching platform that bridges the gap between trainers and clients, featuring real-time progress tracking, personalized workout plans, and accountability tools to help users achieve their fitness goals.",
+      description: "A comprehensive coaching platform bridging trainers and clients with real-time progress tracking and personalized workout plans.",
       image: "/images/placeholder1.png",
-      tags: ["Next.js", "TypeScript", "MongoDB", "Real-time Updates"],
+      tags: ["Next.js", "TypeScript", "MongoDB"],
       liveUrl: "https://www.creneura.com",
       githubUrl: null,
       icon: Rocket,
-      gradient: "from-blue-500 to-cyan-500",
       category: "Web Application",
+      year: "2024",
     },
     {
       title: "Food Marketplace Platform",
-      description: "A modern food delivery and marketplace application connecting local restaurants with customers. Features include real-time order tracking, secure payments, and an intuitive browsing experience.",
+      description: "Modern food delivery connecting local restaurants with customers. Real-time order tracking and secure payments.",
       image: "/images/food.png",
-      tags: ["React", "Node.js", "Express", "Stripe API"],
+      tags: ["React", "Node.js", "Stripe API"],
       liveUrl: "https://kittchenns-frontend.vercel.app/",
       githubUrl: null,
       icon: ShoppingCart,
-      gradient: "from-emerald-500 to-teal-500",
       category: "E-Commerce",
+      year: "2024",
     },
     {
       title: "Task Management System",
-      description: "A powerful productivity tool for managing tasks, projects, and team collaboration. Built with a focus on simplicity and efficiency, featuring drag-and-drop functionality and team workspaces.",
+      description: "Productivity tool for managing tasks and team collaboration. Drag-and-drop functionality with team workspaces.",
       image: "/images/SA.png",
-      tags: ["React", "Firebase", "Tailwind CSS", "Framer Motion"],
+      tags: ["React", "Firebase", "Framer Motion"],
       liveUrl: null,
       githubUrl: null,
       icon: CheckSquare,
-      gradient: "from-purple-500 to-pink-500",
       category: "Productivity",
+      year: "2024",
     },
     {
       title: "Treazy - Hair & Beauty Platform",
-      description: "An elegant booking and showcase platform for hair and beauty services. Features appointment scheduling, service catalog, portfolio galleries, and seamless client management.",
+      description: "Elegant booking platform for hair and beauty services with appointment scheduling and portfolio galleries.",
       image: "/images/save.png",
-      tags: ["Next.js", "Tailwind CSS", "Vercel", "Responsive Design"],
+      tags: ["Next.js", "Tailwind CSS", "Vercel"],
       liveUrl: "https://treazy-psi.vercel.app/",
       githubUrl: null,
       icon: Scissors,
-      gradient: "from-pink-500 to-rose-500",
       category: "Service Platform",
+      year: "2024",
     },
     {
       title: "AI-Powered Drug Adherence Monitor",
-      description: "An innovative healthcare solution leveraging AI to monitor and improve medication adherence. Features intelligent reminders, health tracking, and personalized insights for better patient outcomes.",
+      description: "Healthcare solution leveraging AI for medication adherence with intelligent reminders and health tracking.",
       image: "/images/well.png",
-      tags: ["TypeScript", "AI/ML", "Healthcare", "Real-time Analytics"],
+      tags: ["TypeScript", "AI/ML", "Healthcare"],
       liveUrl: "https://lih-wellcare-companion-pyk8q.sevalla.app/",
       githubUrl: null,
       icon: Pill,
-      gradient: "from-indigo-500 to-blue-500",
       category: "Healthcare Tech",
+      year: "2024",
     },
-  
-  {
+    {
       title: "Health Store",
-      description: "An innovative healthcare solution leveraging AI to monitor and improve medication adherence. Features intelligent reminders, health tracking, and personalized insights for better patient outcomes.",
+      description: "E-commerce platform for healthcare products with seamless checkout and inventory management.",
       image: "/images/health.png",
-      tags: ["React", "Subase", "Healthcare", "E-Commerce"],
+      tags: ["React", "Supabase", "E-Commerce"],
       liveUrl: "https://healthexcellence.shop/",
       githubUrl: null,
-      icon: Pill,
-      gradient: "from-indigo-500 to-blue-500",
+      icon: Sparkles,
       category: "Healthcare Tech",
+      year: "2024",
     },
   ]
 
@@ -86,245 +85,245 @@ export default function Projects() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.15 },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: "easeOut" },
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
     },
   }
 
   return (
-    <section id="projects" className="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-b from-background via-muted/20 to-background relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/3 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-      </div>
+    <section id="projects" className="relative min-h-screen bg-[#0a0a0a] text-white overflow-hidden">
+      {/* Faint grid texture */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto">
+      {/* Top label bar */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex items-center justify-between px-6 sm:px-10 lg:px-16 py-5 border-b border-white/[0.07] mt-[52px] sm:mt-[56px]"
+      >
+        <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-white/30">
+          Selected Work
+        </span>
+        <span className="flex items-center gap-2">
+          <span className="relative flex h-[7px] w-[7px]">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex h-[7px] w-[7px] rounded-full bg-emerald-400" />
+          </span>
+          <span className="text-[10px] font-mono tracking-wide text-white/40">
+            {projects.length} Projects
+          </span>
+        </span>
+      </motion.div>
+
+      {/* Main Content */}
+      <div className="px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-16 lg:mb-24"
         >
-          <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            Portfolio Showcase
-          </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Featured Projects</h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Explore a selection of projects that showcase my ability to build scalable, user-centric solutions across various industries
+          <p className="text-[11px] font-mono tracking-[0.22em] uppercase text-white/30 mb-6">
+            Portfolio
           </p>
+          <h2 className="text-[clamp(36px,6vw,80px)] font-black tracking-tighter leading-[0.9] uppercase">
+            <span className="block">Featured</span>
+            <span className="block text-white/20">Projects.</span>
+          </h2>
         </motion.div>
 
+        {/* Projects Grid */}
         <motion.div
           ref={ref}
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="space-y-16 lg:space-y-32"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/[0.07]"
         >
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              className={`flex flex-col ${index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"} gap-8 lg:gap-12 items-center group`}
-            >
-              {/* Image Section */}
-              <div className="w-full lg:w-1/2 relative">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative"
-                >
-                  {/* Gradient border */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} rounded-2xl opacity-50 blur-xl group-hover:opacity-75 transition-opacity duration-500`} />
-                  
-                  <div className="relative overflow-hidden rounded-2xl shadow-2xl border border-border/50">
-                    <div className="aspect-video bg-muted relative">
+          {projects.map((project, index) => {
+            const Icon = project.icon
+            const isHovered = hoveredIndex === index
+            
+            return (
+              <motion.article
+                key={index}
+                variants={itemVariants}
+                className="relative bg-[#0a0a0a] group"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <div className="relative p-6 sm:p-8 lg:p-10 border-b border-white/[0.07] lg:border-b-0">
+                  {/* Project Number & Icon */}
+                  <div className="flex items-start justify-between mb-8">
+                    <span className="text-[10px] font-mono text-white/20 tracking-wider">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <motion.div
+                      animate={{ rotate: isHovered ? 5 : 0, scale: isHovered ? 1.1 : 1 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="p-2 border border-white/[0.1] rounded-lg"
+                    >
+                      <Icon className="h-4 w-4 text-white/40" />
+                    </motion.div>
+                  </div>
+
+                  {/* Image */}
+                  <div className="relative mb-8 overflow-hidden rounded-lg border border-white/[0.07]">
+                    <div className="aspect-[16/10] bg-[#111] relative">
                       <Image
                         src={project.image || "/placeholder.svg"}
                         alt={project.title}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
                       />
-                      {/* Overlay gradient */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+                      {/* Scanline effect */}
+                      <div 
+                        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{
+                          background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)"
+                        }}
+                      />
                     </div>
-
-                    {/* Floating category badge */}
+                    
+                    {/* Category badge */}
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1.5 bg-background/90 backdrop-blur-md rounded-full text-xs font-medium border border-border/50">
+                      <span className="px-3 py-1.5 bg-[#0a0a0a]/90 backdrop-blur-md rounded text-[10px] font-mono text-white/50 border border-white/[0.1] tracking-wide">
                         {project.category}
                       </span>
                     </div>
+
+                    {/* Live indicator */}
+                    {project.liveUrl && (
+                      <div className="absolute top-4 right-4">
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 backdrop-blur-md rounded text-[10px] font-mono text-emerald-400 border border-emerald-500/20">
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                          </span>
+                          LIVE
+                        </span>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Decorative element */}
-                  <motion.div
-                    className={`absolute -bottom-4 ${index % 2 === 0 ? '-right-4' : '-left-4'} w-24 h-24 bg-gradient-to-br ${project.gradient} rounded-full opacity-20 blur-2xl -z-10`}
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.2, 0.3, 0.2],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  />
-                </motion.div>
-              </div>
-
-              {/* Content Section */}
-              <div className="w-full lg:w-1/2 space-y-6">
-                {/* Icon */}
-                <motion.div
-                  whileHover={{ rotate: 5, scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${project.gradient}`}
-                >
-                  <project.icon className="h-6 w-6 text-white" />
-                </motion.div>
-
-                <div>
-                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                    {project.description}
-                  </p>
-                </div>
-
-                {/* Tech Stack Tags */}
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag, tagIndex) => (
-                    <motion.span
-                      key={tagIndex}
-                      className="px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-sm font-medium border border-primary/20 hover:bg-primary/20 transition-colors"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {tag}
-                    </motion.span>
-                  ))}
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-wrap gap-4 pt-2">
-                  {project.liveUrl ? (
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button 
-                        asChild
-                        className={`relative overflow-hidden bg-gradient-to-r ${project.gradient} hover:shadow-lg hover:shadow-primary/50 transition-all duration-300`}
-                      >
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                          <ExternalLink className="h-4 w-4" />
-                          <span>View Live Project</span>
-                        </a>
-                      </Button>
-                    </motion.div>
-                  ) : (
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button 
-                        disabled
-                        variant="secondary"
-                        className="relative overflow-hidden cursor-not-allowed"
-                      >
-                        <ExternalLink className="mr-2 h-4 w-4" />
-                        Coming Soon
-                      </Button>
-                    </motion.div>
-                  )}
-                  
-                  {project.githubUrl ? (
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button 
-                        variant="outline" 
-                        asChild
-                        className="border-2 hover:bg-primary/10 transition-all duration-300"
-                      >
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                          <Github className="h-4 w-4" />
-                          <span>Source Code</span>
-                        </a>
-                      </Button>
-                    </motion.div>
-                  ) : (
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button 
-                        variant="outline" 
-                        disabled
-                        className="cursor-not-allowed border-2"
-                      >
-                        <Code2 className="mr-2 h-4 w-4" />
-                        Private Repository
-                      </Button>
-                    </motion.div>
-                  )}
-                </div>
-
-                {/* Project Stats/Highlights */}
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/50">
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-1">Status</p>
-                    <p className="text-sm font-semibold flex items-center gap-1">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                      </span>
-                      Active
+                  {/* Content */}
+                  <div className="space-y-4">
+                    <h3 className="text-xl sm:text-2xl font-bold tracking-tight group-hover:text-emerald-400 transition-colors duration-300">
+                      {project.title}
+                    </h3>
+                    
+                    <p className="text-[13px] text-white/40 leading-relaxed max-w-md">
+                      {project.description}
                     </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-1">Type</p>
-                    <p className="text-sm font-semibold">Full Stack</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-1">Year</p>
-                    <p className="text-sm font-semibold">2024</p>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {project.tags.map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className="text-[10px] font-mono px-2.5 py-1 border border-white/[0.1] text-white/30 tracking-wide hover:text-white/50 hover:border-white/20 transition-colors duration-200"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-4 pt-6 border-t border-white/[0.07] mt-6">
+                      {project.liveUrl ? (
+                        <Link
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/link inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-white/60 hover:text-emerald-400 transition-colors duration-200"
+                        >
+                          View Project
+                          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                        </Link>
+                      ) : (
+                        <span className="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/20">
+                          Coming Soon
+                        </span>
+                      )}
+                      
+                      {project.githubUrl ? (
+                        <Link
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-white/30 hover:text-white/60 transition-colors duration-200"
+                        >
+                          <Github className="h-3.5 w-3.5" />
+                          Source
+                        </Link>
+                      ) : (
+                        <span className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-white/15">
+                          <Github className="h-3.5 w-3.5" />
+                          Private
+                        </span>
+                      )}
+
+                      <span className="ml-auto text-[10px] font-mono text-white/20">
+                        {project.year}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                {/* Corner decorations */}
+                <div className="absolute top-0 right-0 w-px h-8 bg-gradient-to-b from-white/10 to-transparent" />
+                <div className="absolute bottom-0 left-0 w-8 h-px bg-gradient-to-r from-white/10 to-transparent" />
+              </motion.article>
+            )
+          })}
         </motion.div>
 
-        {/* CTA Section */}
+        {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center mt-20 pt-12 border-t border-border/50"
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="mt-20 pt-12 border-t border-white/[0.07]"
         >
-          <h3 className="text-2xl md:text-3xl font-bold mb-4">Interested in working together?</h3>
-          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
-          </p>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button 
-              size="lg"
-              asChild
-              className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300"
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+            <div>
+              <p className="text-[11px] font-mono tracking-[0.22em] uppercase text-white/30 mb-3">
+                Next Steps
+              </p>
+              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight">
+                Have a project in mind?
+              </h3>
+            </div>
+            
+            <Link
+              href="#contact"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#0a0a0a] text-[12px] font-black tracking-[0.12em] uppercase hover:bg-emerald-400 transition-colors duration-200 shrink-0"
             >
-              <a href="#contact" className="flex items-center gap-2">
-                <Rocket className="h-5 w-5" />
-                <span>Let's Build Something Amazing</span>
-              </a>
-            </Button>
-          </motion.div>
+              Let&apos;s Talk
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
         </motion.div>
       </div>
+
+      {/* Bottom rule */}
+      <div className="border-t border-white/[0.07]" />
     </section>
   )
 }

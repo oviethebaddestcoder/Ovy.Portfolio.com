@@ -1,230 +1,243 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
+import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 import Image from "next/image"
-import { Code2, Sparkles, Target, Users, Mail, MapPin, CheckCircle2 } from "lucide-react"
+import { ArrowUpRight, MapPin, Mail } from "lucide-react"
+
+const stats = [
+  { value: "12+",  label: "Projects Shipped",    sub: "end-to-end" },
+  { value: "2",    label: "Companies Worked At",  sub: "as product engineer" },
+  { value: "100%", label: "Client Satisfaction",  sub: "always" },
+]
+
+const stack = ["React", "TypeScript", "Node.js", "Express", "MySQL", "Tailwind"]
 
 export default function About() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.3 })
+  const isInView = useInView(ref, { once: true, amount: 0.15 })
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  }
-
-  const imageVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  }
-
-  const highlights = [
-    { icon: Code2, text: "Clean & Modern Code" },
-    { icon: Target, text: "User-Focused Design" },
-    { icon: Sparkles, text: "Pixel Perfect Results" },
-    { icon: Users, text: "Collaborative Approach" },
-  ]
+  const fade = (delay = 0) => ({
+    hidden: { opacity: 0, y: 28 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay } },
+  })
 
   return (
-    <section id="about" className="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-b from-background via-muted/20 to-background relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-      </div>
+    <section
+      id="about"
+      ref={ref}
+      className="relative bg-[#0a0a0a] text-white overflow-hidden"
+    >
+      {/* Faint grid texture overlay */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
-        >
-          {/* Image Section - Enhanced */}
-          <motion.div variants={imageVariants} className="relative order-2 lg:order-1">
-            <div className="relative group">
-              {/* Main image container with gradient border */}
-              <div className="relative h-[450px] md:h-[500px] rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1">
-                <div className="relative h-full w-full rounded-2xl overflow-hidden bg-background">
-                  <Image 
-                    src="/images/ovy-Photoroom.png" 
-                    alt="Ovie Usman - Fullstack Developer" 
-                    fill 
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  
-                  {/* Overlay gradient on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-              </div>
+      {/* Top rule */}
+      <div className="border-t border-white/[0.07]" />
 
-              {/* Floating accent elements */}
-              <motion.div
-                className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 opacity-20 blur-2xl"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.2, 0.3, 0.2]
-                }}
-                transition={{ duration: 4, repeat: Infinity }}
-              />
-              
-              <motion.div
-                className="absolute -bottom-6 -left-6 w-32 h-32 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 opacity-20 blur-2xl"
-                animate={{ 
-                  scale: [1, 1.3, 1],
-                  opacity: [0.2, 0.3, 0.2]
-                }}
-                transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-              />
+      {/* ── Section label row ── */}
+      <motion.div
+        variants={fade(0)}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="flex items-center justify-between px-6 sm:px-10 lg:px-16 py-5 border-b border-white/[0.07]"
+      >
+      
+        <span className="text-[10px] font-mono text-white/20 tracking-wide">
+          Lagos, Nigeria · GMT+1
+        </span>
+      </motion.div>
 
-              {/* Floating card - Years of Experience */}
-              <motion.div
-                className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-background/95 backdrop-blur-lg border border-border rounded-2xl px-6 py-4 shadow-xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.8, duration: 0.6 }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white">3+</span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Years of</p>
-                    <p className="text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-                      Experience
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+      {/* ── Main grid ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_480px] min-h-[680px]">
 
-              {/* Decorative dots */}
-              <div className="absolute top-8 left-8 grid grid-cols-3 gap-2 opacity-30">
-                {[...Array(9)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="w-2 h-2 rounded-full bg-primary"
-                    animate={{ opacity: [0.3, 0.7, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div>
+        {/* LEFT — copy column */}
+        <div className="flex flex-col justify-between px-6 sm:px-10 lg:px-16 py-14 lg:py-16 border-b lg:border-b-0 lg:border-r border-white/[0.07]">
 
-          {/* Content Section */}
-          <div className="order-1 lg:order-2">
-            <motion.div variants={itemVariants}>
-              <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                Get To Know Me
-              </span>
-            </motion.div>
-
-            <motion.h2 
-              variants={itemVariants} 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 relative"
+          {/* Headline */}
+          <div>
+            <motion.p
+              variants={fade(0.05)}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/30 mb-6"
             >
-              About Me
-              <motion.span 
-                className="absolute -bottom-2 left-0 h-1.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full"
-                initial={{ width: 0 }}
-                animate={isInView ? { width: "30%" } : {}}
-                transition={{ delay: 0.5, duration: 0.8 }}
-              />
+              Full Stack Developer
+            </motion.p>
+
+            <motion.h2
+              variants={fade(0.1)}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="text-[clamp(2.6rem,6vw,5rem)] font-black leading-[0.92] tracking-tight mb-8 uppercase"
+            >
+              I don't just{" "}
+              <span className="relative inline-block">
+                write code.
+                <motion.span
+                  className="absolute bottom-1 left-0 h-[3px] bg-emerald-400 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={isInView ? { width: "100%" } : {}}
+                  transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </span>
+              <br />
+              <span className="text-white/20">I ship</span> products.
             </motion.h2>
 
-            <motion.div variants={itemVariants} className="space-y-4 mb-8">
-              <p className="text-lg text-foreground/80 leading-relaxed">
-                Hello! I'm a passionate web developer with a strong focus on creating beautiful, functional, and user-friendly websites and applications.
-              </p>
+            <motion.p
+              variants={fade(0.18)}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="text-[15px] sm:text-base leading-[1.8] text-white/50 max-w-[520px] mb-4"
+            >
+              I'm Ovie — a full stack developer from Lagos with a reputation for turning
+              complex requirements into clean, fast, scalable products. I've worked
+              across two companies as a Product Engineer, shipping real software
+              that real users depend on.
+            </motion.p>
 
-              <div className="relative pl-6 border-l-4 border-gradient-to-b from-blue-500 via-purple-500 to-pink-500">
-                <p className="text-xl md:text-2xl font-semibold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                  Your vision, My code... Bringing ideas to Life
-                </p>
-              </div>
-            </motion.div>
+            <motion.p
+              variants={fade(0.24)}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="text-[15px] sm:text-base leading-[1.8] text-white/50 max-w-[520px] mb-10"
+            >
+              Whether it's architecting a Node/Express backend, building a pixel-perfect
+              React UI, or designing a MySQL schema from scratch — I own it end to end.
+              No hand-holding. No half-baked deliverables.
+            </motion.p>
 
-            {/* Highlights Grid */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 mb-8">
-              {highlights.map((item, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors group"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+            {/* Stack pills */}
+            <motion.div
+              variants={fade(0.3)}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="flex flex-wrap gap-2 mb-12"
+            >
+              {stack.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1 text-[11px] font-mono tracking-wide border border-white/[0.12] rounded-full text-white/50 hover:text-white hover:border-white/30 transition-colors duration-200"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <item.icon className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="text-sm font-medium">{item.text}</span>
-                </motion.div>
+                  {tech}
+                </span>
               ))}
             </motion.div>
 
-            {/* Info Cards */}
-            <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/50 hover:border-primary/50 transition-colors">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                    <Mail className="h-4 w-4 text-blue-500" />
-                  </div>
-                  <h3 className="font-semibold text-sm">Email</h3>
-                </div>
-                <p className="text-sm text-muted-foreground break-all">Ovieanthony85@gmail.com</p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/50 hover:border-primary/50 transition-colors">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                    <MapPin className="h-4 w-4 text-purple-500" />
-                  </div>
-                  <h3 className="font-semibold text-sm">Location</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">Lagos, Nigeria</p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/50 hover:border-primary/50 transition-colors sm:col-span-2">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                  </div>
-                  <h3 className="font-semibold text-sm">Availability</h3>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                  </span>
-                  <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-                    Available for freelance work
-                  </p>
-                </div>
+            {/* Contact strip */}
+            <motion.div
+              variants={fade(0.36)}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+              <a
+                href="mailto:Ovieanthony85@gmail.com"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-[#0a0a0a] text-[13px] font-bold tracking-wide hover:bg-emerald-400 transition-colors duration-200"
+              >
+                <Mail className="h-3.5 w-3.5" />
+                Hire Me
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+              <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-white/[0.1] text-[13px] text-white/40">
+                <MapPin className="h-3.5 w-3.5 shrink-0" />
+                Lagos, Nigeria · Open to Remote
               </div>
             </motion.div>
           </div>
+
+          {/* Stat strip — bottom of left col */}
+          <motion.div
+            variants={fade(0.42)}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="hidden lg:grid grid-cols-3 gap-0 mt-16 pt-8 border-t border-white/[0.07]"
+          >
+            {stats.map((s, i) => (
+              <div
+                key={i}
+                className={`pr-6 ${i !== 0 ? "pl-6 border-l border-white/[0.07]" : ""}`}
+              >
+                <p className="text-[2.2rem] font-black leading-none text-white mb-1">{s.value}</p>
+                <p className="text-[11px] font-semibold text-white/60 mb-0.5">{s.label}</p>
+                <p className="text-[10px] font-mono text-white/25 uppercase tracking-wide">{s.sub}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* RIGHT — image column */}
+        <motion.div
+          variants={fade(0.1)}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="relative flex flex-col"
+        >
+          {/* Image fills the column */}
+          <div className="relative flex-1 min-h-[420px] lg:min-h-0 overflow-hidden">
+            <Image
+              src="/images/ovy-Photoroom.png"
+              alt="Ovie Usman — Fullstack Developer"
+              fill
+              className="object-cover object-top"
+              priority
+            />
+
+            {/* Dark gradient overlay at bottom */}
+            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
+
+            {/* Availability badge — pinned bottom-left inside the image */}
+            <motion.div
+              className="absolute bottom-6 left-5 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#0f0f0f]/90 backdrop-blur-sm border border-white/[0.1]"
+              initial={{ opacity: 0, y: 12 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.65, duration: 0.5 }}
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              <span className="text-[11px] font-mono text-white/60 tracking-wide">
+                Available for work
+              </span>
+            </motion.div>
+
+            {/* Exp badge — top-right */}
+            <motion.div
+              className="absolute top-5 right-5 flex flex-col items-center justify-center w-[72px] h-[72px] rounded-full bg-[#0f0f0f]/90 backdrop-blur-sm border border-white/[0.12]"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ delay: 0.7, duration: 0.45 }}
+            >
+              <span className="text-[22px] font-black text-white leading-none">3+</span>
+              <span className="text-[9px] font-mono text-white/40 tracking-wide uppercase text-center leading-tight mt-0.5">yrs exp</span>
+            </motion.div>
+          </div>
+
+          {/* Mobile stat strip below image */}
+          <div className="lg:hidden grid grid-cols-3 gap-0 border-t border-white/[0.07] px-6 py-6">
+            {stats.map((s, i) => (
+              <div
+                key={i}
+                className={`${i !== 0 ? "pl-4 border-l border-white/[0.07]" : "pr-4"}`}
+              >
+                <p className="text-[1.6rem] font-black leading-none text-white mb-1">{s.value}</p>
+                <p className="text-[10px] font-semibold text-white/50 leading-tight">{s.label}</p>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
+
+      {/* Bottom rule */}
+      <div className="border-t border-white/[0.07]" />
     </section>
   )
 }

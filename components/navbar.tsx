@@ -1,199 +1,261 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Menu, X, Download } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
+
+const navLinks = [
+  { href: "#",         label: "Home",     num: "01" },
+  { href: "#about",    label: "About",    num: "02" },
+  { href: "#skills",   label: "Skills",   num: "03" },
+  { href: "#projects", label: "Projects", num: "04" },
+  { href: "#contact",  label: "Contact",  num: "05" },
+]
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [active, setActive]     = useState("Home")
   const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState("Home")
-
-  const toggleMenu = () => setIsOpen(!isOpen)
+  const [open, setOpen]         = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    const threshold = window.innerHeight * 0.55
+    const onScroll = () => setScrolled(window.scrollY > threshold)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  const navLinks = [
-    { href: "#", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "#skills", label: "Skills" },
-    { href: "#projects", label: "Projects" },
-    { href: "#contact", label: "Contact" },
-  ]
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      const y = window.scrollY
+      document.body.style.cssText = `
+        overflow: hidden;
+        position: fixed;
+        top: -${y}px;
+        left: 0; right: 0;
+      `
+    } else {
+      const top = Math.abs(parseInt(document.body.style.top || "0"))
+      document.body.style.cssText = ""
+      window.scrollTo(0, top)
+    }
+  }, [open])
+
+  const handleNav = useCallback((label: string) => {
+    setActive(label)
+    setOpen(false)
+  }, [])
+
+  // Scrolled state changes the navbar background; always dark
+  const isTransparent = !scrolled && !open
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? "bg-background/70 backdrop-blur-xl shadow-lg border-b border-border/40" 
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo with gradient */}
-          <Link href="/" className="relative group">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"
-            >
-              OVYCODES
-            </motion.div>
-            <motion.div
-              className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
-              initial={{ width: 0 }}
-              whileHover={{ width: "100%" }}
-              transition={{ duration: 0.3 }}
-            />
+    <>
+      <header
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+        className={`
+          fixed top-0 left-0 right-0 z-50
+          transition-all duration-500 ease-in-out
+          ${isTransparent
+            ? "bg-transparent border-b border-white/10"
+            : "bg-[#0a0a0a] border-b border-white/10 shadow-[0_2px_24px_0_rgba(0,0,0,0.5)]"
+          }
+        `}
+      >
+        <div className="flex items-stretch h-[52px] sm:h-[56px]">
+
+          {/* ── Logo ── */}
+          <Link
+            href="/"
+            onClick={() => handleNav("Home")}
+            className="
+              flex items-center shrink-0 px-4 sm:px-5 md:px-6
+              text-[11px] font-black tracking-[0.22em] uppercase
+              text-white/90 hover:text-white
+              border-r border-white/10
+              transition-colors duration-200
+            "
+          >
+            Ovycodes
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
-            <nav className="flex items-center space-x-1">
-              {navLinks.map((link, index) => (
+          {/* ── Desktop links ── */}
+          <nav className="hidden md:flex items-stretch">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => handleNav(link.label)}
+                className={`
+                  relative flex items-center px-4 lg:px-5
+                  text-[11px] font-mono tracking-[0.06em] uppercase
+                  transition-all duration-200 border-r border-white/[0.08]
+                  ${active === link.label
+                    ? "text-white"
+                    : "text-white/35 hover:text-white/70 hover:bg-white/[0.04]"
+                  }
+                `}
+              >
+                {link.label}
+                {active === link.label && (
+                  <motion.span
+                    layoutId="active-pill"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-white"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
+              </Link>
+            ))}
+          </nav>
+
+          {/* ── Right block ── */}
+          <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 md:px-5 ml-auto border-l border-white/10">
+
+            {/* Availability dot — hidden on small screens */}
+            <span className="hidden lg:flex items-center gap-2">
+              <span className="relative flex h-[7px] w-[7px]">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-[7px] w-[7px] rounded-full bg-emerald-400" />
+              </span>
+              <span className="text-[10px] font-mono tracking-wide text-white/40">
+                Available
+              </span>
+            </span>
+
+            {/* Hamburger — mobile/tablet only (hidden md+) */}
+            <button
+              onClick={() => setOpen((o) => !o)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              className="
+                md:hidden
+                relative flex items-center justify-center
+                w-9 h-9 rounded-md
+                bg-white/[0.08] hover:bg-white/[0.14]
+                border border-white/[0.12]
+                transition-colors duration-150
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30
+              "
+            >
+              <span className="flex flex-col gap-[5px] items-center">
+                <motion.span
+                  animate={open
+                    ? { rotate: 45, y: 6.5, width: 18 }
+                    : { rotate: 0,  y: 0,   width: 18 }}
+                  transition={{ duration: 0.22, ease: "easeInOut" }}
+                  className="block h-[1.5px] bg-white/90 rounded-full origin-center"
+                  style={{ width: 18 }}
+                />
+                <motion.span
+                  animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                  transition={{ duration: 0.15 }}
+                  className="block h-[1.5px] bg-white/90 rounded-full"
+                  style={{ width: 12 }}
+                />
+                <motion.span
+                  animate={open
+                    ? { rotate: -45, y: -6.5, width: 18 }
+                    : { rotate: 0,   y: 0,    width: 18 }}
+                  transition={{ duration: 0.22, ease: "easeInOut" }}
+                  className="block h-[1.5px] bg-white/90 rounded-full origin-center"
+                  style={{ width: 18 }}
+                />
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── Mobile fullscreen menu ── */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0% 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+            style={{
+              paddingTop: "calc(52px + env(safe-area-inset-top))",
+              paddingBottom: "env(safe-area-inset-bottom)",
+            }}
+            className="fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col md:hidden"
+          >
+            {/* Nav items */}
+            <nav className="flex-1 flex flex-col justify-center px-0">
+              {navLinks.map((link, i) => (
                 <motion.div
                   key={link.label}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.055, duration: 0.25, ease: "easeOut" }}
                 >
                   <Link
                     href={link.href}
-                    onClick={() => setActiveSection(link.label)}
-                    className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 group"
+                    onClick={() => handleNav(link.label)}
+                    className={`
+                      group flex items-center justify-between
+                      px-6 sm:px-8 py-[15px] sm:py-[18px]
+                      border-b border-white/[0.05]
+                      transition-colors duration-150
+                      ${active === link.label ? "bg-white/[0.04]" : "hover:bg-white/[0.03]"}
+                    `}
                   >
-                    <span className="relative z-10 group-hover:text-primary transition-colors">
-                      {link.label}
+                    <div className="flex items-baseline gap-4 sm:gap-6">
+                      <span className="text-[10px] font-mono text-white/20 tabular-nums w-5 shrink-0">
+                        {link.num}
+                      </span>
+                      <span className={`
+                        text-[28px] sm:text-[34px] font-black tracking-tight uppercase leading-none
+                        transition-colors duration-150
+                        ${active === link.label
+                          ? "text-white"
+                          : "text-white/45 group-hover:text-white/80"}
+                      `}>
+                        {link.label}
+                      </span>
+                    </div>
+                    <span className={`
+                      text-sm transition-all duration-200
+                      ${active === link.label
+                        ? "text-white/60 translate-x-0"
+                        : "text-white/15 group-hover:text-white/40 group-hover:translate-x-1"}
+                    `}>
+                      →
                     </span>
-                    {activeSection === link.label && (
-                      <motion.div
-                        layoutId="activeSection"
-                        className="absolute inset-0 bg-primary/10 rounded-lg"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/10 to-pink-500/0 rounded-lg opacity-0 group-hover:opacity-100"
-                      transition={{ duration: 0.3 }}
-                    />
                   </Link>
                 </motion.div>
               ))}
             </nav>
 
-            <div className="flex items-center space-x-3 ml-4">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-              >
-                <ThemeToggle />
-              </motion.div>
-
-            </div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden space-x-3">
-            <ThemeToggle />
-            <motion.div whileTap={{ scale: 0.9 }}>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={toggleMenu}
-                className="relative overflow-hidden"
-              >
-                <AnimatePresence mode="wait">
-                  {isOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <X className="h-6 w-6" />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Menu className="h-6 w-6" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu with stunning design */}
-      <AnimatePresence>
-        {isOpen && (
-          <>
+            {/* Footer */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm md:hidden"
-              onClick={toggleMenu}
-            />
-            <motion.div
-              initial={{ opacity: 0, x: "100%" }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-16 right-0 bottom-0 w-64 md:hidden bg-background/95 backdrop-blur-xl border-l border-border/40 shadow-2xl"
+              transition={{ delay: 0.4 }}
+              className="flex items-center justify-between px-6 sm:px-8 py-5 border-t border-white/[0.06]"
             >
-              <div className="px-6 py-8 space-y-6 h-full flex flex-col">
-                <nav className="flex flex-col space-y-2 flex-1">
-                  {navLinks.map((link, index) => (
-                    <motion.div
-                      key={link.label}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.1 }}
-                    >
-                      <Link
-                        href={link.href}
-                        className="relative block text-lg font-medium py-3 px-4 rounded-lg hover:bg-primary/10 transition-all duration-300 group overflow-hidden"
-                        onClick={toggleMenu}
-                      >
-                        <span className="relative z-10">{link.label}</span>
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100"
-                          transition={{ duration: 0.3 }}
-                        />
-                      </Link>
-                    </motion.div>
-                  ))}
-                </nav>
-
-              
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-[6px] w-[6px]">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                  <span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-emerald-400" />
+                </span>
+                <span className="text-[10px] font-mono tracking-wide text-white/35">
+                  Open to work
+                </span>
               </div>
+              <span className="text-[10px] font-mono text-white/20">
+                Lagos · {new Date().getFullYear()}
+              </span>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   )
 }
